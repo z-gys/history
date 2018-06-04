@@ -1,7 +1,6 @@
 package ru.mobiledimension.edu.history;
 
 import lombok.SneakyThrows;
-import org.fluttercode.datafactory.impl.DataFactory;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Modifier;
@@ -13,6 +12,7 @@ public class ObjectFactory {
     private static ObjectFactory ourInstance = new ObjectFactory();
     private List<ObjectConfigurator> configurators = new ArrayList<>();
     private Reflections scanner = new Reflections("ru.mobiledimension.edu.history");
+    private Config config = new JavaConfig();
 
     public static ObjectFactory getInstance() {
         return ourInstance;
@@ -30,10 +30,29 @@ public class ObjectFactory {
 
     @SneakyThrows
     public <T> T createObject(Class<T> clazz) {
-        T instance = clazz.newInstance();
+        Class<? extends T> aClass = resolveImpl(clazz);
+
+        T instance = aClass.newInstance();
         for (ObjectConfigurator configurator: configurators) {
             configurator.configure(instance);
         }
         return instance;
+    }
+
+    public <T> Class<? extends T> resolveImpl(Class<T> type) {
+        if (!type.isInterface()) {
+            return type;
+        }
+
+        Class<T> implClass = config.getImplClass(type);
+        if (implClass != null) {
+            return implClass;
+        }
+
+        Set<Class<? extends T>> classes = scanner.getSubTypesOf(type);
+        if (classes.size() !=1) {
+            throw new RuntimeException("0 or more than one impl found for " + type + "! Check your config");
+        }
+        return classes.stream().findAny().get();
     }
 }
