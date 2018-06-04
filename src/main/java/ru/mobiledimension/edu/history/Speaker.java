@@ -4,10 +4,16 @@ package ru.mobiledimension.edu.history;
  * @author U.Goryntsev 03.06.2018.
  */
 public class Speaker {
+
     private String name;
 
-    public Speaker(String name) {
+    public String getName() {
+        return name;
+    }
+
+    public Speaker setName(String name) {
         this.name = name;
+        return this;
     }
 
     public void speak(String phrase) {

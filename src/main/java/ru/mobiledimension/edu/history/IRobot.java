@@ -5,7 +5,7 @@ package ru.mobiledimension.edu.history;
  */
 public class IRobot {
     private Cleaner cleaner = new Cleaner();
-    private Speaker speaker = new Speaker("Marfa");
+    private Speaker speaker = new Speaker().setName("Марфа");
 
     public void cleanTheRoom() {
         speaker.speak("Начинаю убирать");
