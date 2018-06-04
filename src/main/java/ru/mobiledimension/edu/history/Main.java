@@ -5,7 +5,7 @@ package ru.mobiledimension.edu.history;
  */
 public class Main {
     public static void main(String[] args) {
-        IRobot iRobot = new IRobot();
+        IRobot iRobot = ObjectFactory.getInstance().createIRobot();
         iRobot.cleanTheRoom();
     }
 }
