@@ -4,8 +4,10 @@ package ru.mobiledimension.edu.history;
  * @author U.Goryntsev 03.06.2018.
  */
 public class IRobot {
-    private Cleaner cleaner = ObjectFactory.getInstance().createObject(Cleaner.class);
-    private Speaker speaker = ObjectFactory.getInstance().createObject(Speaker.class);
+    @InjectByType
+    private Cleaner cleaner;
+    @InjectByType
+    private Speaker speaker;
 
     public void cleanTheRoom() {
         speaker.speak("Начинаю убирать");
