@@ -5,6 +5,7 @@ package ru.mobiledimension.edu.history;
  */
 public class Speaker {
 
+    @InjectRandomName
     private String name;
 
     public String getName() {
