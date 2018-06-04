@@ -3,6 +3,9 @@ package ru.mobiledimension.edu.history;
 import lombok.SneakyThrows;
 import org.reflections.Reflections;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +36,25 @@ public class ObjectFactory {
         Class<? extends T> aClass = resolveImpl(clazz);
 
         T instance = aClass.newInstance();
+        configure(instance);
+        invokeInitMethods(instance);
+
+        return instance;
+    }
+
+    private <T> void invokeInitMethods(T instance) throws IllegalAccessException, InvocationTargetException {
+        Method[] methods = instance.getClass().getDeclaredMethods();
+        for (Method method: methods) {
+            if (method.isAnnotationPresent(InitMethod.class)) {
+                method.invoke(instance);
+            }
+        }
+    }
+
+    private <T> void configure(T instance) {
         for (ObjectConfigurator configurator: configurators) {
             configurator.configure(instance);
         }
-        return instance;
     }
 
     public <T> Class<? extends T> resolveImpl(Class<T> type) {

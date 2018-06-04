@@ -13,4 +13,9 @@ public class CleanerImpl implements Cleaner {
         System.out.println("VVVVVVVVVVvvvvvvvvvVVVVVVVVVVVVV");
         Thread.sleep(500);
     }
+
+    @InitMethod
+    public void init() {
+        System.out.println("Настраиваюсь");
+    }
 }
