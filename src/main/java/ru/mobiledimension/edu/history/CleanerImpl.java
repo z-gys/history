@@ -15,6 +15,7 @@ public class CleanerImpl implements Cleaner {
     }
 
     @InitMethod
+    @Override
     public void init() {
         System.out.println("Настраиваюсь");
     }
