@@ -33,27 +33,28 @@ public class ObjectFactory {
     }
 
     @SneakyThrows
-    public <T> T createObject(Class<T> clazz) {
-        Class<? extends T> aClass = resolveImpl(clazz);
+    public <T> T createObject(Class<T> type) {
+        Class<? extends T> aClass = resolveImpl(type);
 
-        T instance = aClass.newInstance();
-        configure(instance);
-        invokeInitMethods(instance);
+        T t = aClass.newInstance();
+        configure(t);
+        invokeInitMethods(t);
 
-        if (clazz.isAnnotationPresent(Benchmark.class)) {
-            return (T) Proxy.newProxyInstance(clazz.getClassLoader(), clazz.getInterfaces(), ((proxy, method, args) -> {
-                System.out.println("************BENCHMARK**************");
-                System.out.println(method.getName() + " started");
+        if (type.isAnnotationPresent(Benchmark.class)) {
+            return (T) Proxy.newProxyInstance(type.getClassLoader(), aClass.getInterfaces(), (proxy, method, args) -> {
+                System.out.println("********BENCHMARK************");
+                System.out.println(method.getName()+" started");
                 long start = System.nanoTime();
-                Object retVal = method.invoke(instance, args);
+                Object retVal = method.invoke(t, args);
                 long end = System.nanoTime();
-                System.out.println(method.getName() + " ended in " + (end - start));
-                System.out.println("************BENCHMARK**************");
+                System.out.println(end-start);
+                System.out.println(method.getName()+" ended");
+                System.out.println("********BENCHMARK************");
                 return retVal;
-            }));
+            });
         }
 
-        return instance;
+        return t;
     }
 
     private <T> void invokeInitMethods(T instance) throws IllegalAccessException, InvocationTargetException {
