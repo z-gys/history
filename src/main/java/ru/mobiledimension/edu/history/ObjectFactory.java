@@ -47,8 +47,7 @@ public class ObjectFactory {
                 long start = System.nanoTime();
                 Object retVal = method.invoke(t, args);
                 long end = System.nanoTime();
-                System.out.println(end-start);
-                System.out.println(method.getName()+" ended");
+                System.out.println(method.getName()+" ended in " + (end-start));
                 System.out.println("********BENCHMARK************");
                 return retVal;
             });
