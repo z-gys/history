@@ -40,7 +40,7 @@ public class ObjectFactory {
         configure(t);
         invokeInitMethods(t);
 
-        if (type.isAnnotationPresent(Benchmark.class)) {
+        if (aClass.isAnnotationPresent(Benchmark.class)) {
             return (T) Proxy.newProxyInstance(type.getClassLoader(), aClass.getInterfaces(), (proxy, method, args) -> {
                 System.out.println("********BENCHMARK************");
                 System.out.println(method.getName()+" started");

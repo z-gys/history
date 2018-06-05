@@ -5,6 +5,7 @@ import lombok.SneakyThrows;
 /**
  * @author U.Goryntsev 03.06.2018.
  */
+@Benchmark
 public class CleanerImpl implements Cleaner {
 
     @Override
